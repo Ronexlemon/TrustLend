@@ -56,5 +56,20 @@ contract TrustLend is IntTrustLend {
         emit RequestLoan(msg.sender,loanID, _collateralAmount, _borrowAmount, interest, percentage, _duration);
         return loanID;
 }
+ function lendLoan(bytes32 _loanId)external{
+        Loan storage loan = loans[_loanId];
+        require(!loan.status.isLend," Lent out");
+        require(!loan.status.isPaid," paid out ");
+        require(loan.involvers.lender == address(0),"have an Issuer");
+        loan.involvers.lender = msg.sender;
+        loan.duration.start = block.timestamp;
+        loan.duration.end = block.timestamp + loan.duration.duration;
+        loan.status.isLend = true;
+        emit LendLoan(loan.involvers.borrower, loan.involvers.lender, _loanId, loan.amounts.collateralAmount, loan.amounts.borrowedAmount,loan.amounts.interest,loan.amounts.loanPercentage, loan.duration.end);
+
+
+
+
+    } 
 
 }
