@@ -89,4 +89,20 @@ contract TrustLend is IntTrustLend {
 
     } 
 
+    function claimCollateralBack(bytes32 _loanId)external {
+         Loan storage loan = loans[_loanId];
+        require(loan.status.isLend," !Lent out");
+        require(!loan.status.isPaid," paid out ");
+        require(loan.duration.end == 0, "Still Active");
+        require(loan.involvers.lender == address(0),"Has Issuer");
+        require(loan.involvers.borrower == msg.sender,"Has Issuer");
+
+        //return back the collateral
+        // loan.involvers.borrower.transfer(loan.amounts.collateralAmount)
+        loan.amounts.collateralAmount = 0 ;
+        loan.status.isPaid = true;
+        emit Claim(loan.involvers.borrower, _loanId,loan.amounts.collateralAmount);
+
+    }
+
 }
