@@ -72,4 +72,21 @@ contract TrustLend is IntTrustLend {
 
     } 
 
+     function liquidate(bytes32 _loanId )external{
+         Loan storage loan = loans[_loanId];
+        require(loan.status.isLend," !Lent out");
+        require(!loan.status.isPaid," paid out ");
+        require(loan.duration.end < block.timestamp, "Still Active");
+        require(loan.involvers.lender != address(0),"No Issuer");
+
+        //transfer the borrowed amout to the lender and claim collateral
+        //IERC20(_tokenAddress).transferFrom(msg.sender,loan.involvers.lender,(loan.amounts.borrowedAmount + loan.amounts.interest))
+        //claim collateral e.g ETH ->
+        //msg.sender.transfer(loan.amounts.collateralAmount)
+
+        loan.status.isPaid = true;
+        emit Liquidate(msg.sender,loan.involvers.lender, _loanId, loan.involvers.borrower, loan.amounts.collateralAmount, (loan.amounts.borrowedAmount + loan.amounts.interest),loan.amounts.loanPercentage);
+
+    } 
+
 }
