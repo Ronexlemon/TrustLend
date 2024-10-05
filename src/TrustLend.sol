@@ -18,5 +18,43 @@ contract TrustLend is IntTrustLend {
      event Claim(address indexed  _borrower,bytes32 indexed _loanId,uint256 _collateralAmount);
      //mapping
     mapping(bytes32 => Loan)public  loans;
+    function requestLoan(uint256 _collateralValue,uint256 _collateralAmount,uint256 percentage,uint256 _duration,uint256 borrowValue)external returns(bytes32){
+        bytes32 loanID = LibTrustLend.id(msg.sender,block.timestamp);
+        (uint256 interest, uint256 _borrowAmount) = LibTrustLend.percentageWithBorrowTokenAmount(
+            _collateralValue,
+            _collateralAmount,
+            borrowValue,            
+            percentage
+        );
+        
+    
+
+    loans[loanID] = Loan({
+            involvers: Parties({
+                lender: address(0),
+                borrower: msg.sender
+            }),
+            amounts: LoanAmounts({
+                collateralToken: address(1), // Replace with actual token address
+                borrowedToken: address(2),   // Replace with actual token address
+                collateralAmount: _collateralAmount,
+                borrowedAmount: _borrowAmount,
+                interest: interest,
+                loanPercentage: percentage
+            }),
+            status: Status({
+                isPaid: false,
+                isLend: false
+            }),
+            duration: Time({
+                duration:_duration,
+                end: 0,
+                start:0 // Set the start time to the current timestamp during lending
+            }),
+            loanId: loanID
+        });
+        emit RequestLoan(msg.sender,loanID, _collateralAmount, _borrowAmount, interest, percentage, _duration);
+        return loanID;
+}
 
 }
