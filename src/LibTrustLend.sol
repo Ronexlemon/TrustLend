@@ -7,7 +7,7 @@ function id(address _borrower, uint256 _time)public  pure returns(bytes32){
     return keccak256(abi.encode(_borrower,_time));
 }
 
-function percentageWithBorrowTokenAmount(uint256 _collateralValueUSD,uint256 _collateralAmount,uint256 _borrowValueUSD,uint256 percentage) public pure returns(uint256 interest, uint256 _borrowAmount ){
+function percentageWithBorrowTokenAmount(int _collateralValueUSD,uint256 _collateralAmount,int _borrowValueUSD,uint256 percentage) public pure returns(uint256 interest, uint256 _borrowAmount ){
     assembly{
         
         let totalColValue := mul(_collateralValueUSD, _collateralAmount)
