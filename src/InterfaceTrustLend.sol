@@ -44,13 +44,14 @@ interface  IntTrustLend {
 
     //request for loan
 
-    function requestLoan(uint256 _collateralValue,uint256 _collateralAmount,uint256 percentage,uint256 _duration,uint256 borrowValue)external returns(bytes32);
+    function requestLoan(uint256 _collateralAmount,uint256 percentage,uint256 _duration,address collateral, address borrowed)external returns(bytes32);
 
     function lendLoan(bytes32 _loanId)external ;
 
     function liquidate(bytes32 _loanId )external ;
 
     function claimCollateralBack(bytes32 _loanId)external ;
+    function payLoan(bytes32 _loanId)external ;
 
     
     
