@@ -4,6 +4,7 @@ import ConnectButton from "@/components/connect";
 import Header from "@/components/Header";
 import HomeLand from "@/components/pages/Home";
 import DashHeader from "@/components/DashHeader";
+import Dash from "@/components/pages/Dash";
 
 
 
@@ -14,6 +15,8 @@ export default function Home() {
     >
       <main className="min-h-screen">
       <DashHeader/>
+      <Dash/>
+      
       
 
       </main>
