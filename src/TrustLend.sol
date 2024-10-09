@@ -5,11 +5,12 @@ import "./InterfaceTrustLend.sol";
 import "./LibTrustLend.sol";
 import "@openzeppelin/contracts/interfaces/IERC20.sol";
 import "./mockchainlinkDataFeed.sol";
+import "./IaggregatorChainlink.sol";
 
-import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
+
 contract TrustLend is IntTrustLend {
     using LibTrustLend for *;
-    Aggregator public  datafeed;
+    
     
 
     
