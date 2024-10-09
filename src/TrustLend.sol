@@ -5,6 +5,8 @@ import "./InterfaceTrustLend.sol";
 import "./LibTrustLend.sol";
 import "@openzeppelin/contracts/interfaces/IERC20.sol";
 import "./mockchainlinkDataFeed.sol";
+
+import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 contract TrustLend is IntTrustLend {
     using LibTrustLend for *;
     Aggregator public  datafeed;
@@ -163,7 +165,7 @@ struct Request{
             /*uint startedAt*/,
             /*uint timeStamp*/,
             /*uint80 answeredInRound*/
-        ) = Aggregator(_token).latestRoundData();
+        ) = AggregatorV3Interface(_token).latestRoundData();
         return answer;
     }
 }
