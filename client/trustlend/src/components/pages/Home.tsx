@@ -1,8 +1,11 @@
 import React from "react";
-import { Button } from "../ui/button";
+import { Button } from "../ui/button"
+import { useRouter } from "next/router";
+
 
 
 const HomeLand = ()=>{
+    const router = useRouter()
     return(
         <div className="h-screen w-full ">
             <div className="grid grid-cols-2  items-center justify-center h-3/4 w-full">
@@ -23,7 +26,7 @@ const HomeLand = ()=>{
 
                     </div>
                     <div className="">
-                        <Button>GET START</Button>
+                        <Button onClick={()=>router.replace("/dashboard/market")}>GET START</Button>
                         </div>
 
                 </div>
