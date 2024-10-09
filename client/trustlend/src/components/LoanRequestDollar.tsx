@@ -13,6 +13,8 @@ import {
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import TransactionAddToken from "./onchain/addTokens"
+import { useAccount } from "wagmi"
 
 export interface DrawerProp {
   open: boolean;
@@ -116,7 +118,8 @@ const LoanRequestDrawer = ({ open, setOpen }: DrawerProp) => {
             </CardContent>
             <CardFooter className="flex justify-end space-x-2">
               <Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
-              <Button onClick={handleConfirm}>Confirm</Button>
+              {/* <Button onClick={handleConfirm}>Confirm</Button> */}
+              <TransactionAddToken/>
             </CardFooter>
           </Card>
           {/* End of Card */}
