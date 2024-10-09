@@ -1,6 +1,7 @@
 import React from "react";
 import SideBar from "../Sidebar";
 import { LatestLoans } from "../LatestLoans";
+import { LoanTable } from "../LoanTable";
 
 const Dash = ()=>{
     return(
@@ -12,8 +13,8 @@ const Dash = ()=>{
                 <LatestLoans />
                 </div>
                
-                <div className="h-1/2">
-                <LatestLoans />
+                <div className="h-1/4">
+                <LoanTable/>
                 </div>
             </div>
 

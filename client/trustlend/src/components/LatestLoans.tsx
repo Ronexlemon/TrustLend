@@ -95,14 +95,15 @@ export function LatestLoans() {
               </Avatar>
             </CardHeader>
             <CardContent className="flex flex-col justify-center items-start h-1/3">
-              <CardTitle className="text-lg font-semibold">{loan.borrowedAmount} USDC</CardTitle>
+            <CardTitle className="text-sm font-semibold"> USDC - LINK</CardTitle>
+              <CardTitle className="text-sm font-semibold">{loan.borrowedAmount} USDC</CardTitle>
               <CardDescription>Loan Percentage: {loan.loanPercentage} %</CardDescription>
-              <CardDescription>Interest Rate: {loan.interestRate} %</CardDescription>
+              <CardDescription className="">Interest: {loan.interestRate} Usdc</CardDescription>
               <CardDescription>Duration: {loan.duration} months</CardDescription>
               <CardDescription>Collateral: {loan.collateralAmount} LINK</CardDescription>
             </CardContent>
             <CardFooter className="w-full h-1/3">
-              <Button className="bg-blue-500 w-full">Lend</Button>
+              <Button className="bg-orange-500 w-full">Lend</Button>
             </CardFooter>
           </Card>
         ))}
