@@ -103,7 +103,7 @@ export function LatestLoans() {
               <CardDescription>Collateral: {loan.collateralAmount} LINK</CardDescription>
             </CardContent>
             <CardFooter className="w-full h-1/3">
-              <Button className="bg-orange-500 w-full">Lend</Button>
+              <Button className="bg-blue-500 w-full">Lend</Button>
             </CardFooter>
           </Card>
         ))}

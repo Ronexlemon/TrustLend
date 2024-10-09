@@ -245,7 +245,7 @@ export const columns: ColumnDef<Payment>[] = [
     cell: ({ row }) => {
       return (
         <div className="text-right font-medium">
-          <Button className="bg-orange-400"  onClick={() => handleAmountButtonClick(row.original)}>
+          <Button className="bg-blue-400"  onClick={() => handleAmountButtonClick(row.original)}>
             Lend
           </Button>
         </div>
