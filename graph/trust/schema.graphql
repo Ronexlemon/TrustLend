@@ -1,0 +1,65 @@
+type Claim @entity(immutable: true) {
+  id: Bytes!
+  _borrower: Bytes! # address
+  _loanId: Bytes! # bytes32
+  _collateralAmount: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type LendLoan @entity(immutable: true) {
+  id: Bytes!
+  _borrower: Bytes! # address
+  _lender: Bytes! # address
+  _loanId: Bytes! # bytes32
+  _collateralAmount: BigInt! # uint256
+  _borrowedAmount: BigInt! # uint256
+  _interest: BigInt! # uint256
+  _percentage: BigInt! # uint256
+  _endTime: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Liquidate @entity(immutable: true) {
+  id: Bytes!
+  _liquidator: Bytes! # address
+  _lender: Bytes! # address
+  _loanId: Bytes! # bytes32
+  _borrower: Bytes! # address
+  _collateralAmountAcquired: BigInt! # uint256
+  _amountWithInterest: BigInt! # uint256
+  _percentage: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Repay @entity(immutable: true) {
+  id: Bytes!
+  _borrower: Bytes! # address
+  _lender: Bytes! # address
+  _loanId: Bytes! # bytes32
+  _borrowedToken: Bytes! # address
+  _collateralToken: Bytes! # address
+  _collateralAmount: BigInt! # uint256
+  _interest: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type RequestLoan @entity(immutable: true) {
+  id: Bytes!
+  reg__borrower: Bytes! # address
+  reg__loanId: Bytes! # bytes32
+  reg__collateralAmount: BigInt! # uint256
+  reg__borrowedAmount: BigInt! # uint256
+  reg__interest: BigInt! # uint256
+  reg__percentage: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
