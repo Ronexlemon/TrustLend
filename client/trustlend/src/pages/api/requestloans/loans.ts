@@ -21,7 +21,7 @@ export default async function handler(
   res: NextApiResponse<Data | { error: string }>,
 ) {
   try {
-    const response = await fetch('https://api.studio.thegraph.com/query/44880/lendtrust/version/latest', {
+    const response = await fetch('https://api.studio.thegraph.com/query/44880/trustlendv2/version/latest', {
       method: 'POST', // Use POST for GraphQL queries
       headers: {
         'Content-Type': 'application/json',
