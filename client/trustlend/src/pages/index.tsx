@@ -1,6 +1,6 @@
-import Image from "next/image";
+//import Image from "next/image";
 import localFont from "next/font/local";
-import ConnectButton from "@/components/connect";
+//import ConnectButton from "@/components/connect";
 import Header from "@/components/Header";
 import HomeLand from "@/components/pages/Home";
 

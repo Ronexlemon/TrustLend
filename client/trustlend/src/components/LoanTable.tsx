@@ -26,7 +26,7 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
+  //DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
@@ -43,7 +43,8 @@ import {
 import { ScrollArea, ScrollBar } from "./ui/scroll-area"
 import { useQuery } from '@tanstack/react-query';
 import { RequestLoan } from "./LatestLoans"
-import { formatEther } from "ethers"
+import { formatEther, parseEther } from "ethers"
+import TransactionAddToken, {  usdc } from "./onchain/addTokens"
 
 async function fetchLoanRequests() {
   const response = await fetch('/api/requestloans/allloans', {
@@ -62,100 +63,10 @@ async function fetchLoanRequests() {
 }
 
 
-// const data: Payment[] = [
-//     {
-//       id: "0x1a2b3c4d",
-//       image: "https://images.unsplash.com/photo-1465869185982-5a1a7522cbcb?auto=format&fit=crop&w=300&q=80",
-//       loanPercentage: 50,
-//       borrowedAmount: 1000,
-//       interestRate: 5,
-//       duration: 12, // in months
-//       collateralAmount: 100,
-//       status: "Paid" 
-//     },
-//     {
-//       id: "0x2b3c4d5e",
-//       image: "https://images.unsplash.com/photo-1465869185982-5a1a7522cbcb?auto=format&fit=crop&w=300&q=80",
-//       loanPercentage: 60,
-//       borrowedAmount: 2000,
-//       interestRate: 4.5,
-//       duration: 24,
-//       collateralAmount: 100,
-//       status:  "Pending"
-//     },
-//     {
-//       id: "0x3c4d5e6f",
-//       image: "https://images.unsplash.com/photo-1465869185982-5a1a7522cbcb?auto=format&fit=crop&w=300&q=80",
-//       loanPercentage: 55,
-//       borrowedAmount: 1500,
-//       interestRate: 5.2,
-//       duration: 18,
-//       collateralAmount: 100,
-//       status: "Lend" 
-//     },
-//     {
-//       id: "0x3c4d5e6fd",
-//       image: "https://images.unsplash.com/photo-1465869185982-5a1a7522cbcb?auto=format&fit=crop&w=300&q=80",
-//       loanPercentage: 55,
-//       borrowedAmount: 1500,
-//       interestRate: 5.2,
-//       duration: 18,
-//       collateralAmount: 100,
-//       status:  "Paid" 
-//     },
-//     {
-//       id: "0x3c4d5e6fq",
-//       image: "https://images.unsplash.com/photo-1465869185982-5a1a7522cbcb?auto=format&fit=crop&w=300&q=80",
-//       loanPercentage: 55,
-//       borrowedAmount: 1500,
-//       interestRate: 5.2,
-//       duration: 18,
-//       collateralAmount: 100,
-//       status:  "Pending"
-//     },
-//     {
-//       id: "0x3c4d5e6fe",
-//       image: "https://images.unsplash.com/photo-1465869185982-5a1a7522cbcb?auto=format&fit=crop&w=300&q=80",
-//       loanPercentage: 55,
-//       borrowedAmount: 1500,
-//       interestRate: 5.2,
-//       duration: 18,
-//       collateralAmount: 100,
-//       status:  "Paid" 
-//     },
-//     {
-//       id: "0x3c4d5e6fr",
-//       image: "https://images.unsplash.com/photo-1465869185982-5a1a7522cbcb?auto=format&fit=crop&w=300&q=80",
-//       loanPercentage: 55,
-//       borrowedAmount: 1500,
-//       interestRate: 5.2,
-//       duration: 18,
-//       collateralAmount: 100,
-//       status: "Lend" 
-//     },
-//     // Add more loans here...
-//   ];
-  
 
-// export interface RequestLoan{
-  
-//   id : `0x${string}`;
-//   reg__borrower: `0x${string}`;
-//   reg__loanId: `0x${string}`;
-//   reg__collateralAmount: string;
-//   reg__borrowedAmount:string;
-//   reg__interest: string;
-//   reg__percentage: string;
-//   blockNumber: string;
-//   blockTimeStamp:string;
-//   transactionHash: `0x${string}`;
-  
-
-  
-// }
-const handleAmountButtonClick = (payment: RequestLoan) => {
-    alert(`Amount: ${payment.reg__borrowedAmount}`);
-  };
+// const handleAmountButtonClick = (payment: RequestLoan) => {
+//     alert(`Amount: ${payment.reg__borrowedAmount}`);
+//   };
   
 
 export const columns: ColumnDef<RequestLoan>[] = [
@@ -167,14 +78,14 @@ export const columns: ColumnDef<RequestLoan>[] = [
           table.getIsAllPageRowsSelected() ||
           (table.getIsSomePageRowsSelected() && "indeterminate")
         }
-        onCheckedChange={(value:any) => table.toggleAllPageRowsSelected(!!value)}
+        onCheckedChange={(value:boolean) => table.toggleAllPageRowsSelected(!!value)}
         aria-label="Select all"
       />
     ),
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
-        onCheckedChange={(value:any) => row.toggleSelected(!!value)}
+        onCheckedChange={(value:boolean) => row.toggleSelected(!!value)}
         aria-label="Select row"
       />
     ),
@@ -271,9 +182,10 @@ export const columns: ColumnDef<RequestLoan>[] = [
     cell: ({ row }) => {
       return (
         <div className="text-right font-medium">
-          <Button className="bg-blue-400"  onClick={() => handleAmountButtonClick(row.original)}>
+          {/* <Button className="bg-blue-400"  onClick={() => handleAmountButtonClick(row.original)}>
             Lend
-          </Button>
+          </Button> */}
+          <TransactionAddToken buttonTitle="LEND" approeAmount={parseEther(formatEther(row.original.reg__borrowedAmount.toString()))} approveToken={usdc} functionName="lendLoan" args={[row.original.reg__loanId]} contractAddress={row.original.reg__borrower}/>
         </div>
       );
     },
@@ -349,7 +261,7 @@ export function LoanTable() {
         <Input
           placeholder="Filter loans..."
           value={(table.getColumn("borrowedAmount")?.getFilterValue() as string) ?? ""}
-          onChange={(event: any) =>
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
             table.getColumn("borrowedAmount")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"

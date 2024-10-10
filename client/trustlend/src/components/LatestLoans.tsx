@@ -1,13 +1,13 @@
 import * as React from "react";
-import Image from "next/image";
+
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useQuery } from '@tanstack/react-query';
-import { request } from 'graphql-request';
-import { formatEther, parseEther } from "viem";
-import { BigNumberish, ethers } from "ethers";
+
+import { formatEther } from "viem";
+
 
 ///[{"id":"0xf73870ac55f24585f1615b41bf9f1a62fc67af8a038351715f1d987433d50ca064000000",
 //"reg__borrower":"0x14580963582f4fb96b3a6d24eab6bec71b2448d8",

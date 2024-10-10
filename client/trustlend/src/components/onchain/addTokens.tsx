@@ -24,11 +24,14 @@ export interface TransactProp {
   functionName: string;
   args: string | number | `0x${string}` | bigint | (string | number | `0x${string}` | bigint)[];
   buttonTitle:string;
-  approeAmount:number | bigint;
-  approveToken :string | `0x${string}`
+  approeAmount:number | bigint |string;
+  approveToken :string | `0x${string}`;
+  contractAddress?: string | `0x${string}`;
+  
 }
 
-export default function TransactionAddToken({functionName, args, buttonTitle ,approeAmount,approveToken}: TransactProp) {
+export default function TransactionAddToken({functionName, args, buttonTitle ,approeAmount,approveToken,contractAddress}: TransactProp) {
+  console.log("Approval amount",approeAmount)
   const { address } = useAccount();
   const [showTransaction, setShowTransaction] = useState(false); // State to manage visibility
 
@@ -40,15 +43,24 @@ export default function TransactionAddToken({functionName, args, buttonTitle ,ap
       args: Array.isArray(args) ? args : [args],
     },
   ];
+  //setPriceFeed
 
   const contractApprove = [
     {
       address: approveToken as `0x${string}`,
       abi: erc20Abi,
       functionName:"approve",
-      args:[TRUSTLENDCONTRACT,approeAmount],
+      args:[TRUSTLENDCONTRACT ,approeAmount],
     },
   ];
+  // const contractApprove = [
+  //   {
+  //     address: TRUSTLENDCONTRACT as `0x${string}`,
+  //     abi: trustAbi,
+  //     functionName:"setPriceFeed",
+  //     args:[usdc,usdcud],
+  //   },
+  // ];
 
   const handleOnStatus = useCallback((status: LifecycleStatus) => {
     console.log('LifecycleStatus', status);
@@ -72,7 +84,7 @@ export default function TransactionAddToken({functionName, args, buttonTitle ,ap
               onStatus={handleOnStatus}
               
             >
-              <TransactionButton text="Approve"/>
+              <TransactionButton text={buttonTitle ?buttonTitle:"Approve"}/>
               <TransactionSponsor />
               <TransactionStatus>
                 <TransactionStatusLabel />

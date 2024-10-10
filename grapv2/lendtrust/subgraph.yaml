@@ -1,0 +1,38 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: TrustLend
+    network: base-sepolia
+    source:
+      address: "0x64CB0d8C98bC5D4AFBA362De9D42f8De42cbf685"
+      abi: TrustLend
+      startBlock: 16403039
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Claim
+        - LendLoan
+        - Liquidate
+        - Repay
+        - RequestLoan
+      abis:
+        - name: TrustLend
+          file: ./abis/TrustLend.json
+      eventHandlers:
+        - event: Claim(indexed address,indexed bytes32,uint256)
+          handler: handleClaim
+        - event: LendLoan(indexed address,indexed address,indexed bytes32,uint256,uint256,uint256,uint256,uint256)
+          handler: handleLendLoan
+        - event: Liquidate(indexed address,indexed address,indexed bytes32,address,uint256,uint256,uint256)
+          handler: handleLiquidate
+        - event: Repay(indexed address,indexed address,indexed bytes32,address,address,uint256,uint256)
+          handler: handleRepay
+        - event: RequestLoan((address,bytes32,uint256,uint256,uint256,uint256,bool,bool))
+          handler: handleRequestLoan
+      file: ./src/trust-lend.ts

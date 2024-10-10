@@ -1,6 +1,6 @@
 // Header.jsx
 import React from 'react';
-import { useRouter } from 'next/router';
+
 import ConnectButton from './connect';
 
 

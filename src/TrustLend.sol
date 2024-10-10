@@ -21,6 +21,8 @@ struct Request{
     uint256 _borrowedAmount;
     uint256 _interest;
     uint256 _percentage;
+    bool   _isPaid;
+    bool  _isLend;
 }
     
 
@@ -78,26 +80,40 @@ struct Request{
         });
         IERC20(collateral).transferFrom(msg.sender,address(this),_collateralAmount);
         
-        emit RequestLoan(Request( msg.sender,loanID, _collateralAmount, _borrowAmount, interest, percentage));
+        emit RequestLoan(Request( msg.sender,loanID, _collateralAmount, _borrowAmount, interest, percentage,false,false));
         return loanID;
 }
 
-    function lendLoan(bytes32 _loanId)external{
-        Loan storage loan = loans[_loanId];
-        require(!loan.status.isLend," Lent out");
-        require(!loan.status.isPaid," paid out ");
-        require(loan.involvers.lender == address(0),"have an Issuer");
-        loan.involvers.lender = msg.sender;
-        loan.duration.start = block.timestamp;
-        loan.duration.end = block.timestamp + loan.duration.duration;
-        loan.status.isLend = true;
-        IERC20(loan.amounts.borrowedToken).transferFrom(msg.sender,loan.involvers.borrower,loan.amounts.borrowedAmount);
-        emit LendLoan(loan.involvers.borrower, loan.involvers.lender, _loanId, loan.amounts.collateralAmount, loan.amounts.borrowedAmount,loan.amounts.interest,loan.amounts.loanPercentage, loan.duration.end);
+   function lendLoan(bytes32 _loanId) external {
+    Loan storage loan = loans[_loanId];
+    require(!loan.status.isLend, "Already lent out");
+    require(!loan.status.isPaid, "Already paid out");
+    require(loan.involvers.lender == address(0), "Loan already has a lender");
 
+    // Set lender details and loan start/end times
+    loan.involvers.lender = msg.sender;
+    loan.duration.start = block.timestamp;
+    loan.duration.end = block.timestamp + loan.duration.duration;
+    loan.status.isLend = true;
 
+    // Transfer borrowed amount from lender to contract
+    IERC20(loan.amounts.borrowedToken).transferFrom(msg.sender, address(this), loan.amounts.borrowedAmount);
 
+    
+    IERC20(loan.amounts.borrowedToken).transfer(loan.involvers.borrower, loan.amounts.borrowedAmount);
 
-    } 
+    emit LendLoan(
+        loan.involvers.borrower,
+        loan.involvers.lender,
+        _loanId,
+        loan.amounts.collateralAmount,
+        loan.amounts.borrowedAmount,
+        loan.amounts.interest,
+        loan.amounts.loanPercentage,
+        loan.duration.end
+    );
+}
+
 
     function liquidate(bytes32 _loanId )external{
          Loan storage loan = loans[_loanId];

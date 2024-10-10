@@ -1,8 +1,4 @@
-import Image from "next/image";
-import localFont from "next/font/local";
-import ConnectButton from "@/components/connect";
-import Header from "@/components/Header";
-import HomeLand from "@/components/pages/Home";
+
 import DashHeader from "@/components/DashHeader";
 import Dash from "@/components/pages/Dash";
 

@@ -21,7 +21,7 @@ const HomeLand = ()=>{
 
                     <div>
                         <span className="text-gray-100">
-                        Inclusion in finance is more than just access—it's about enabling individuals to <br/>thrive and take  control of their economic futures.
+                        Inclusion in finance is more than just access—it&aposs about enabling individuals to <br/>thrive and take  control of their economic futures.
                         </span>
 
                     </div>
