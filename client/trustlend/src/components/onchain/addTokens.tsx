@@ -58,7 +58,7 @@ export default function TransactionAddToken({functionName, args, buttonTitle ,ap
   //     address: TRUSTLENDCONTRACT as `0x${string}`,
   //     abi: trustAbi,
   //     functionName:"setPriceFeed",
-  //     args:[usdc,usdcud],
+  //     args:[link,linkusd],
   //   },
   // ];
 
