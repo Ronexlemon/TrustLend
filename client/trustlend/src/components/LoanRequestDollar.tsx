@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import TransactionAddToken from "./onchain/addTokens"
+import TransactionAddToken, { link, usdc } from "./onchain/addTokens"
 import { useAccount } from "wagmi"
 
 export interface DrawerProp {
@@ -22,8 +22,8 @@ export interface DrawerProp {
 }
 
 const LoanRequestDrawer = ({ open, setOpen }: DrawerProp) => {
-  const [collateralAmount, setCollateralAmount] = React.useState("");
-  const [percentage, setPercentage] = React.useState("");
+  const [collateralAmount, setCollateralAmount] = React.useState(0);
+  const [percentage, setPercentage] = React.useState(0);
   const [collateralToken, setCollateralToken] = React.useState("LINK");
   const [borrowedToken, setBorrowedToken] = React.useState("USDC");
 
@@ -64,7 +64,7 @@ const LoanRequestDrawer = ({ open, setOpen }: DrawerProp) => {
                   type="number"
                   placeholder="Enter collateral amount"
                   value={collateralAmount}
-                  onChange={(e) => setCollateralAmount(e.target.value)}
+                  onChange={(e) => setCollateralAmount(Number(e.target.value))}
                 />
               </div>
 
@@ -78,7 +78,7 @@ const LoanRequestDrawer = ({ open, setOpen }: DrawerProp) => {
                   type="number"
                   placeholder="Enter percentage"
                   value={percentage}
-                  onChange={(e) => setPercentage(e.target.value)}
+                  onChange={(e) => setPercentage(Number(e.target.value))}
                 />
               </div>
 
@@ -92,9 +92,9 @@ const LoanRequestDrawer = ({ open, setOpen }: DrawerProp) => {
                     <SelectValue placeholder="Select token" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="LINK">LINK</SelectItem>
-                    <SelectItem value="ETH">ETH</SelectItem>
-                    <SelectItem value="BTC">BTC</SelectItem>
+                    <SelectItem value={link}>LINK</SelectItem>
+                    {/* <SelectItem value="ETH">ETH</SelectItem>
+                    <SelectItem value="BTC">BTC</SelectItem> */}
                   </SelectContent>
                 </Select>
               </div>
@@ -109,9 +109,9 @@ const LoanRequestDrawer = ({ open, setOpen }: DrawerProp) => {
                     <SelectValue placeholder="Select token" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="USDC">USDC</SelectItem>
-                    <SelectItem value="DAI">DAI</SelectItem>
-                    <SelectItem value="USDT">USDT</SelectItem>
+                    <SelectItem value={usdc}>USDC</SelectItem>
+                    {/* <SelectItem value="DAI">DAI</SelectItem>
+                    <SelectItem value="USDT">USDT</SelectItem> */}
                   </SelectContent>
                 </Select>
               </div>
@@ -119,7 +119,7 @@ const LoanRequestDrawer = ({ open, setOpen }: DrawerProp) => {
             <CardFooter className="flex justify-end space-x-2">
               <Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
               {/* <Button onClick={handleConfirm}>Confirm</Button> */}
-              <TransactionAddToken/>
+              <TransactionAddToken buttonTitle="Confirm" args={[link,usdc]} functionName="setPrice"/>
             </CardFooter>
           </Card>
           {/* End of Card */}

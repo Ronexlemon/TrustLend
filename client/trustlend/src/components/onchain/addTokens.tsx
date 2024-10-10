@@ -20,11 +20,13 @@ const linkusd = "0xb113F5A928BCfF189C998ab20d753a47F9dE5A61" as `0x${string}`;
 export const link = "0xE4aB69C077896252FAFBD49EFD26B5D171A32410" as `0x${string}`;
 export const usdc = "0x036CbD53842c5426634e7929541eC2318f3dCF7e" as `0x${string}`;
 
-export interface TransactProp{
-  functionName : string
+export interface TransactProp {
+  functionName: string;
+  args: string | number | `0x${string}` | bigint | (string | number | `0x${string}` | bigint)[];
+  buttonTitle:string;
 }
 
-export default function TransactionAddToken() {
+export default function TransactionAddToken({functionName, args, buttonTitle }: TransactProp) {
   const { address } = useAccount();
   const [showTransaction, setShowTransaction] = useState(false); // State to manage visibility
 
@@ -32,8 +34,8 @@ export default function TransactionAddToken() {
     {
       address: TRUSTLENDCONTRACT as `0x${string}`,
       abi: trustAbi,
-      functionName: 'setPriceFeed',
-      args: [usdc, usdcud],
+      functionName:functionName,
+      args: Array.isArray(args) ? args : [args],
     },
   ];
 
@@ -50,7 +52,7 @@ export default function TransactionAddToken() {
     <>
       {/* Button to toggle Transaction component */}
       <Button onClick={handleButtonClick} className="px-4 py-2 bg-blue-500 text-white rounded">
-        {showTransaction ? "Cancel" : "Show Transaction"}
+        {showTransaction ? "Cancel" : buttonTitle}
       </Button>
 
       {/* Conditionally render the Transaction or Wallet based on state and address */}
@@ -61,8 +63,9 @@ export default function TransactionAddToken() {
               chainId={84532}
               contracts={contracts}
               onStatus={handleOnStatus}
+              
             >
-              <TransactionButton />
+              <TransactionButton text="Confrim"/>
               <TransactionSponsor />
               <TransactionStatus>
                 <TransactionStatusLabel />
