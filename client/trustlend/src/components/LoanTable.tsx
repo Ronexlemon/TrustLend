@@ -41,98 +41,124 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { ScrollArea, ScrollBar } from "./ui/scroll-area"
+import { useQuery } from '@tanstack/react-query';
+import { RequestLoan } from "./LatestLoans"
+import { formatEther } from "ethers"
 
-const data: Payment[] = [
-    {
-      id: "0x1a2b3c4d",
-      image: "https://images.unsplash.com/photo-1465869185982-5a1a7522cbcb?auto=format&fit=crop&w=300&q=80",
-      loanPercentage: 50,
-      borrowedAmount: 1000,
-      interestRate: 5,
-      duration: 12, // in months
-      collateralAmount: 100,
-      status: "Paid" 
+async function fetchLoanRequests() {
+  const response = await fetch('/api/requestloans/allloans', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
-    {
-      id: "0x2b3c4d5e",
-      image: "https://images.unsplash.com/photo-1465869185982-5a1a7522cbcb?auto=format&fit=crop&w=300&q=80",
-      loanPercentage: 60,
-      borrowedAmount: 2000,
-      interestRate: 4.5,
-      duration: 24,
-      collateralAmount: 100,
-      status:  "Pending"
-    },
-    {
-      id: "0x3c4d5e6f",
-      image: "https://images.unsplash.com/photo-1465869185982-5a1a7522cbcb?auto=format&fit=crop&w=300&q=80",
-      loanPercentage: 55,
-      borrowedAmount: 1500,
-      interestRate: 5.2,
-      duration: 18,
-      collateralAmount: 100,
-      status: "Lend" 
-    },
-    {
-      id: "0x3c4d5e6fd",
-      image: "https://images.unsplash.com/photo-1465869185982-5a1a7522cbcb?auto=format&fit=crop&w=300&q=80",
-      loanPercentage: 55,
-      borrowedAmount: 1500,
-      interestRate: 5.2,
-      duration: 18,
-      collateralAmount: 100,
-      status:  "Paid" 
-    },
-    {
-      id: "0x3c4d5e6fq",
-      image: "https://images.unsplash.com/photo-1465869185982-5a1a7522cbcb?auto=format&fit=crop&w=300&q=80",
-      loanPercentage: 55,
-      borrowedAmount: 1500,
-      interestRate: 5.2,
-      duration: 18,
-      collateralAmount: 100,
-      status:  "Pending"
-    },
-    {
-      id: "0x3c4d5e6fe",
-      image: "https://images.unsplash.com/photo-1465869185982-5a1a7522cbcb?auto=format&fit=crop&w=300&q=80",
-      loanPercentage: 55,
-      borrowedAmount: 1500,
-      interestRate: 5.2,
-      duration: 18,
-      collateralAmount: 100,
-      status:  "Paid" 
-    },
-    {
-      id: "0x3c4d5e6fr",
-      image: "https://images.unsplash.com/photo-1465869185982-5a1a7522cbcb?auto=format&fit=crop&w=300&q=80",
-      loanPercentage: 55,
-      borrowedAmount: 1500,
-      interestRate: 5.2,
-      duration: 18,
-      collateralAmount: 100,
-      status: "Lend" 
-    },
-    // Add more loans here...
-  ];
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch loan requests');
+  }
+
+  const data = await response.json();
+  return data.requestLoans;
+}
+
+
+// const data: Payment[] = [
+//     {
+//       id: "0x1a2b3c4d",
+//       image: "https://images.unsplash.com/photo-1465869185982-5a1a7522cbcb?auto=format&fit=crop&w=300&q=80",
+//       loanPercentage: 50,
+//       borrowedAmount: 1000,
+//       interestRate: 5,
+//       duration: 12, // in months
+//       collateralAmount: 100,
+//       status: "Paid" 
+//     },
+//     {
+//       id: "0x2b3c4d5e",
+//       image: "https://images.unsplash.com/photo-1465869185982-5a1a7522cbcb?auto=format&fit=crop&w=300&q=80",
+//       loanPercentage: 60,
+//       borrowedAmount: 2000,
+//       interestRate: 4.5,
+//       duration: 24,
+//       collateralAmount: 100,
+//       status:  "Pending"
+//     },
+//     {
+//       id: "0x3c4d5e6f",
+//       image: "https://images.unsplash.com/photo-1465869185982-5a1a7522cbcb?auto=format&fit=crop&w=300&q=80",
+//       loanPercentage: 55,
+//       borrowedAmount: 1500,
+//       interestRate: 5.2,
+//       duration: 18,
+//       collateralAmount: 100,
+//       status: "Lend" 
+//     },
+//     {
+//       id: "0x3c4d5e6fd",
+//       image: "https://images.unsplash.com/photo-1465869185982-5a1a7522cbcb?auto=format&fit=crop&w=300&q=80",
+//       loanPercentage: 55,
+//       borrowedAmount: 1500,
+//       interestRate: 5.2,
+//       duration: 18,
+//       collateralAmount: 100,
+//       status:  "Paid" 
+//     },
+//     {
+//       id: "0x3c4d5e6fq",
+//       image: "https://images.unsplash.com/photo-1465869185982-5a1a7522cbcb?auto=format&fit=crop&w=300&q=80",
+//       loanPercentage: 55,
+//       borrowedAmount: 1500,
+//       interestRate: 5.2,
+//       duration: 18,
+//       collateralAmount: 100,
+//       status:  "Pending"
+//     },
+//     {
+//       id: "0x3c4d5e6fe",
+//       image: "https://images.unsplash.com/photo-1465869185982-5a1a7522cbcb?auto=format&fit=crop&w=300&q=80",
+//       loanPercentage: 55,
+//       borrowedAmount: 1500,
+//       interestRate: 5.2,
+//       duration: 18,
+//       collateralAmount: 100,
+//       status:  "Paid" 
+//     },
+//     {
+//       id: "0x3c4d5e6fr",
+//       image: "https://images.unsplash.com/photo-1465869185982-5a1a7522cbcb?auto=format&fit=crop&w=300&q=80",
+//       loanPercentage: 55,
+//       borrowedAmount: 1500,
+//       interestRate: 5.2,
+//       duration: 18,
+//       collateralAmount: 100,
+//       status: "Lend" 
+//     },
+//     // Add more loans here...
+//   ];
   
 
-export type Payment = {
-    id: `0x${string}`;
-    image: string;
-    loanPercentage: number;
-    borrowedAmount: number;
-    interestRate: number;
-    duration: number;
-    collateralAmount: number;
-    status: "Lend" | "Paid" | "Pending"
-}
-const handleAmountButtonClick = (payment: Payment) => {
-    alert(`Amount: ${payment.borrowedAmount}`);
+// export interface RequestLoan{
+  
+//   id : `0x${string}`;
+//   reg__borrower: `0x${string}`;
+//   reg__loanId: `0x${string}`;
+//   reg__collateralAmount: string;
+//   reg__borrowedAmount:string;
+//   reg__interest: string;
+//   reg__percentage: string;
+//   blockNumber: string;
+//   blockTimeStamp:string;
+//   transactionHash: `0x${string}`;
+  
+
+  
+// }
+const handleAmountButtonClick = (payment: RequestLoan) => {
+    alert(`Amount: ${payment.reg__borrowedAmount}`);
   };
   
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<RequestLoan>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -163,7 +189,7 @@ export const columns: ColumnDef<Payment>[] = [
     ),
   },
   {
-    accessorKey: "collateralAmount",
+    accessorKey: "reg__collateralAmount",
     header: ({ column }) => {
       return (
         <Button
@@ -175,10 +201,10 @@ export const columns: ColumnDef<Payment>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("collateralAmount")}</div>,
+    cell: ({ row }) => <div className="lowercase">{Number(formatEther(BigInt(row.getValue("reg__collateralAmount")))).toFixed(5)}</div>,
   },
   {
-    accessorKey: "interestRate",
+    accessorKey: "reg__interest",
     header: ({ column }) => {
       return (
         <Button
@@ -190,10 +216,10 @@ export const columns: ColumnDef<Payment>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("interestRate")}</div>,
+    cell: ({ row }) => <div className="lowercase">{Number(formatEther(BigInt(row.getValue("reg__interest")))).toFixed(5)}</div>,
   },
   {
-    accessorKey: "loanPercentage",
+    accessorKey: "reg__percentage",
     header: ({ column }) => {
       return (
         <Button
@@ -205,11 +231,11 @@ export const columns: ColumnDef<Payment>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("loanPercentage")}</div>,
+    cell: ({ row }) => <div className="lowercase">{row.getValue("reg__percentage")}</div>,
   },
 
   {
-    accessorKey: "borrowedAmount",
+    accessorKey: "reg__borrowedAmount",
     header: ({ column }) => {
       return (
         <Button
@@ -221,7 +247,7 @@ export const columns: ColumnDef<Payment>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("borrowedAmount")}</div>,
+    cell: ({ row }) => <div className="lowercase">{Number(formatEther(BigInt(row.getValue("reg__borrowedAmount")))).toFixed(5)}</div>,
   },
   {
     accessorKey: "duration",
@@ -280,6 +306,13 @@ export const columns: ColumnDef<Payment>[] = [
 ]
 
 export function LoanTable() {
+  const { data, error, isLoading } = useQuery({
+    queryKey: ['requestLoansAll'],
+    queryFn: fetchLoanRequests,
+  });
+  console.log("data is data",data)
+
+  
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -306,6 +339,8 @@ export function LoanTable() {
       rowSelection,
     },
   })
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
 
   return (
     <ScrollArea className="w-full h-72 whitespace-nowrap rounded-md border">
