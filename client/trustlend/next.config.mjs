@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['images.unsplash.com'], // Allow external images from Unsplash
+    domains: ['images.unsplash.com',"api.studio.thegraph.com"], // Allow external images from Unsplash
   },
 };
 

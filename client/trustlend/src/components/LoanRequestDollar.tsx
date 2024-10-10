@@ -15,6 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import TransactionAddToken, { link, usdc } from "./onchain/addTokens"
 import { useAccount } from "wagmi"
+import { parseEther } from "viem"
 
 export interface DrawerProp {
   open: boolean;
@@ -22,8 +23,8 @@ export interface DrawerProp {
 }
 
 const LoanRequestDrawer = ({ open, setOpen }: DrawerProp) => {
-  const [collateralAmount, setCollateralAmount] = React.useState(0);
-  const [percentage, setPercentage] = React.useState(0);
+  const [collateralAmount, setCollateralAmount] = React.useState("");
+  const [percentage, setPercentage] = React.useState("");
   const [collateralToken, setCollateralToken] = React.useState("LINK");
   const [borrowedToken, setBorrowedToken] = React.useState("USDC");
 
@@ -64,7 +65,7 @@ const LoanRequestDrawer = ({ open, setOpen }: DrawerProp) => {
                   type="number"
                   placeholder="Enter collateral amount"
                   value={collateralAmount}
-                  onChange={(e) => setCollateralAmount(Number(e.target.value))}
+                  onChange={(e) => setCollateralAmount((e.target.value))}
                 />
               </div>
 
@@ -78,7 +79,7 @@ const LoanRequestDrawer = ({ open, setOpen }: DrawerProp) => {
                   type="number"
                   placeholder="Enter percentage"
                   value={percentage}
-                  onChange={(e) => setPercentage(Number(e.target.value))}
+                  onChange={(e) => setPercentage((e.target.value))}
                 />
               </div>
 
@@ -119,7 +120,8 @@ const LoanRequestDrawer = ({ open, setOpen }: DrawerProp) => {
             <CardFooter className="flex justify-end space-x-2">
               <Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
               {/* <Button onClick={handleConfirm}>Confirm</Button> */}
-              <TransactionAddToken buttonTitle="Confirm" args={[link,usdc]} functionName="setPrice"/>
+              {/* requestLoan(uint256 _collateralAmount,uint256 percentage,uint256 _duration,address collateral, address borrowed */}
+              <TransactionAddToken buttonTitle="Confirm" args={[parseEther(collateralAmount),percentage,100,link,usdc]} functionName="requestLoan" approeAmount={parseEther(collateralAmount)} approveToken={link}/>
             </CardFooter>
           </Card>
           {/* End of Card */}

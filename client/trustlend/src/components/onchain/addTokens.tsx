@@ -11,7 +11,7 @@ import {
 import type { LifecycleStatus } from '@coinbase/onchainkit/transaction';
 import { useAccount } from 'wagmi';
 import { TRUSTLENDCONTRACT } from "@/contracts/contract";
-import { trustAbi } from "@/abi/TrustLend";
+import { trustAbi,erc20Abi } from "@/abi/TrustLend";
 import { ConnectWallet, Wallet } from "@coinbase/onchainkit/wallet";
 import { Button } from "../ui/button";
 
@@ -24,9 +24,11 @@ export interface TransactProp {
   functionName: string;
   args: string | number | `0x${string}` | bigint | (string | number | `0x${string}` | bigint)[];
   buttonTitle:string;
+  approeAmount:number | bigint;
+  approveToken :string | `0x${string}`
 }
 
-export default function TransactionAddToken({functionName, args, buttonTitle }: TransactProp) {
+export default function TransactionAddToken({functionName, args, buttonTitle ,approeAmount,approveToken}: TransactProp) {
   const { address } = useAccount();
   const [showTransaction, setShowTransaction] = useState(false); // State to manage visibility
 
@@ -36,6 +38,15 @@ export default function TransactionAddToken({functionName, args, buttonTitle }: 
       abi: trustAbi,
       functionName:functionName,
       args: Array.isArray(args) ? args : [args],
+    },
+  ];
+
+  const contractApprove = [
+    {
+      address: approveToken as `0x${string}`,
+      abi: erc20Abi,
+      functionName:"approve",
+      args:[TRUSTLENDCONTRACT,approeAmount],
     },
   ];
 
@@ -51,8 +62,33 @@ export default function TransactionAddToken({functionName, args, buttonTitle }: 
   return (
     <>
       {/* Button to toggle Transaction component */}
-      <Button onClick={handleButtonClick} className="px-4 py-2 bg-blue-500 text-white rounded">
-        {showTransaction ? "Cancel" : buttonTitle}
+      <Button variant="ghost" onClick={handleButtonClick} className="px-4 py-2 bg-none hover:bg-none text-white rounded">
+        {showTransaction ? "Cancel" : (
+        <>
+          {address ? (
+            <Transaction
+              chainId={84532}
+              contracts={contractApprove}
+              onStatus={handleOnStatus}
+              
+            >
+              <TransactionButton text="Approve"/>
+              <TransactionSponsor />
+              <TransactionStatus>
+                <TransactionStatusLabel />
+                <TransactionStatusAction />
+              </TransactionStatus>
+            </Transaction>
+          ) : (
+            <Wallet>
+              <ConnectWallet>
+                <Avatar className='h-6 w-6' />
+                <Name />
+              </ConnectWallet>
+            </Wallet>
+          )}
+        </>
+      )}
       </Button>
 
       {/* Conditionally render the Transaction or Wallet based on state and address */}
