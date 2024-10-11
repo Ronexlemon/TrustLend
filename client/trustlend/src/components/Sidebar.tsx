@@ -26,7 +26,7 @@ const SideBar = ({open,setOpen}:SideBarProp) => {
 
       <nav className="flex flex-col items-start p-4">
         <button
-          onClick={() => handleNavigation("/")}
+          onClick={() => handleNavigation("/dashboard/market")}
           className={`w-full text-left px-4 py-2 my-2 rounded-md bg-blue-200 hover:bg-blue-500 transition-colors duration-200 ${
             router.pathname === "/" ? "bg-orange-200" : ""
           }`}
@@ -35,22 +35,30 @@ const SideBar = ({open,setOpen}:SideBarProp) => {
         </button>
 
         <button
-          onClick={() => handleNavigation("/loans")}
+          onClick={() => handleNavigation("/dashboard/market/loans")}
           className={`w-full text-left px-4 py-2 my-2 rounded-md bg-blue-200 hover:bg-blue-500  transition-colors duration-200 ${
             router.pathname === "/loans" ? "bg-blue-700" : ""
           }`}
         >
           Loans
         </button>
+        <Button
+          onClick={() => handleNavigation("//dashboard/market/loans/request")}
+          className={`w-full text-left px-4 py-2 my-2 rounded-md bg-blue-200 tex-black hover:bg-blue-500  transition-colors duration-200 ${
+            router.pathname === "/repay" ? "bg-blue-700" : ""
+          }`}
+        >
+          User Requests
+        </Button>
 
-        <button
+        <Button
           onClick={() => handleNavigation("/repay")}
           className={`w-full text-left px-4 py-2 my-2 rounded-md bg-blue-200 hover:bg-blue-500  transition-colors duration-200 ${
             router.pathname === "/repay" ? "bg-blue-700" : ""
           }`}
         >
           Repay
-        </button>
+        </Button>
         <div  className="pt-10">
         <Button onClick={handleOpen} className="bg-blue-700">
           Loan Request
