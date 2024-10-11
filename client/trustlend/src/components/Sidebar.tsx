@@ -40,10 +40,10 @@ const SideBar = ({open,setOpen}:SideBarProp) => {
             router.pathname === "/loans" ? "bg-blue-700" : ""
           }`}
         >
-          Loans
+          User Loans
         </button>
         <Button
-          onClick={() => handleNavigation("//dashboard/market/loans/request")}
+          onClick={() => handleNavigation("/dashboard/market/loans/request")}
           className={`w-full text-left px-4 py-2 my-2 rounded-md bg-blue-200 tex-black hover:bg-blue-500  transition-colors duration-200 ${
             router.pathname === "/repay" ? "bg-blue-700" : ""
           }`}
@@ -52,12 +52,12 @@ const SideBar = ({open,setOpen}:SideBarProp) => {
         </Button>
 
         <Button
-          onClick={() => handleNavigation("/repay")}
+          onClick={() => handleNavigation("/dashboard/market/loans/request/liquidate")}
           className={`w-full text-left px-4 py-2 my-2 rounded-md bg-blue-200 hover:bg-blue-500  transition-colors duration-200 ${
             router.pathname === "/repay" ? "bg-blue-700" : ""
           }`}
         >
-          Repay
+          Liquidate
         </Button>
         <div  className="pt-10">
         <Button onClick={handleOpen} className="bg-blue-700">
