@@ -24,11 +24,24 @@ struct Request{
     bool   _isPaid;
     bool  _isLend;
 }
-    
+
+struct Lend{
+    address   _borrower;
+    address   _lender;
+    bytes32    _loanId;
+    uint256 _collateralAmount;
+    uint256 _borrowedAmount;
+    uint256 _interest;
+    uint256 _percentage;
+    uint256 _endTime;
+    bool   _isPaid;
+    bool  _isLend;
+
+}
 
     //events
     event  RequestLoan(Request reg);
-    event LendLoan(address indexed  _borrower,address indexed _lender,bytes32 indexed _loanId,uint256 _collateralAmount,uint256 _borrowedAmount,uint256 _interest,uint256 _percentage,uint256 _endTime);
+    event LendLoan(Lend led);
      event Liquidate(address indexed  _liquidator,address indexed _lender,bytes32 indexed _loanId,address _borrower,uint256 _collateralAmountAcquired,uint256 _amountWithInterest,uint256 _percentage);
      event Claim(address indexed  _borrower,bytes32 indexed _loanId,uint256 _collateralAmount);
      event Repay(address indexed  _borrower,address indexed  _lender,bytes32 indexed _loanId,address _borrowedToken,address _collateralToken,uint256 _collateralAmount, uint256 _interest);
@@ -112,16 +125,19 @@ struct Request{
 
     
     IERC20(loan.amounts.borrowedToken).transfer(loan.involvers.borrower, borrowedAmountInEther);
+   
 
-    emit LendLoan(
-        loan.involvers.borrower,
+    emit LendLoan(Lend(loan.involvers.borrower,
         loan.involvers.lender,
         _loanId,
         loan.amounts.collateralAmount,
         loan.amounts.borrowedAmount,
         loan.amounts.interest,
         loan.amounts.loanPercentage,
-        loan.duration.end
+        loan.duration.end,
+        loan.status.isPaid,
+        loan.status.isLend)
+        
     );
 }
 
