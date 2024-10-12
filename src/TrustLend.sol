@@ -50,11 +50,11 @@ struct Lend{
 
     //mapping
     mapping(bytes32 => Loan)public  loans;
-    mapping (address token=>  address priceFeed)public priceFeeds;
-    mapping (address token = > uint256 decimals) public tokendecimal;
+    mapping (address token =>  address priceFeed)public priceFeeds;
+    mapping (address token => uint256 decimals) public tokendecimal;
 
     // Helper function to convert wei to ether (for ERC20 tokens)
-    function weiToEther(uint256 amount ,address token) internal pure returns (uint256) {
+    function weiToEther(uint256 amount ,address token) internal view returns (uint256) {
         return amount / 10 ** tokendecimal[token]; // Convert wei to ether (assuming ERC20 has 18 decimals)
     }
 

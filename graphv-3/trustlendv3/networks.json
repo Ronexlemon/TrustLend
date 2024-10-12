@@ -1,0 +1,8 @@
+{
+  "base-sepolia": {
+    "TrustLend": {
+      "address": "0xe5159fc942D1909511b7253eaE3Dd056B98e619a",
+      "startBlock": 16484626
+    }
+  }
+}
