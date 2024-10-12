@@ -28,7 +28,7 @@ const SideBar = ({open,setOpen}:SideBarProp) => {
         <button
           onClick={() => handleNavigation("/dashboard/market")}
           className={`w-full text-left px-4 py-2 my-2 rounded-md bg-blue-200 hover:bg-blue-500 transition-colors duration-200 ${
-            router.pathname === "/" ? "bg-orange-200" : ""
+            router.pathname === "/dashboard/market" ? "bg-blue-700" : ""
           }`}
         >
           Home
