@@ -5,7 +5,7 @@ const Header =()=>{
     return(
         <div className="bg-gradient-to-r from-[#5975FF] to-[#3029D9] h-24 w-full flex justify-around items-center">
             <div className="flex w-1/3 justify-start items-center text-white text-3xl font-bold">
-                <h1>LOGO</h1>
+               
                 <h2 className="text-4xl">TRUSTLEND</h2>
 
             </div>

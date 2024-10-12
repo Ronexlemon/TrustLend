@@ -6,9 +6,16 @@ import { ProviderRpc } from '@/constant/provider';
 import { ethers, Contract } from 'ethers';
 import { usdc, link } from './onchain/addTokens';
 import { useAccount } from 'wagmi';
+import { Button } from './ui/button';
+import { useRouter } from "next/router";
 
 const DashHeader = () => {
   const { address, isConnected } = useAccount();
+  const router = useRouter();
+ 
+
+  // Function to handle navigation
+  
   const [usdcBalance, setUSDCBalance] = useState<string | null>(null);
   const [linkBalance, setLinkBalance] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -17,6 +24,10 @@ const DashHeader = () => {
   const provider = useMemo(() => new ethers.JsonRpcProvider(ProviderRpc), []);
   const usdcContract = useMemo(() => new Contract(usdc, erc20Abi, provider), [provider]);
   const linkContract = useMemo(() => new Contract(link, erc20Abi, provider), [provider]);
+
+  const handleNavigation = (path:string) => {
+    router.push(path);
+  };
 
   useEffect(() => {
     const getBalances = async () => {
@@ -58,7 +69,7 @@ const DashHeader = () => {
   return (
     <div className="bg-gray-100 h-24 w-full flex justify-between border-b border-gray-400 items-center">
       <div className="flex justify-around w-1/2">
-        <span className="text-black font-bold">TrustLend</span>
+        <Button  onClick={() => handleNavigation("/")}variant="link" className="text-blue-500 text-3xl font-bold">TrustLend</Button>
 
         {/* Display LINK balance or loading/error states */}
         <span className="text-gray-500">

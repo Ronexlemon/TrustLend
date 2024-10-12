@@ -30,6 +30,11 @@ const HomeLand = ()=>{
                         </div>
 
                 </div>
+                <div className=" flex flex-col col-span-1 gap-4 justify-center items-start">
+                    <img src="/images/hero2.png" alt="financial solutions" className="w
+                    -full h-full object-cover" />
+
+                </div>
 
             </div>
 
