@@ -43,7 +43,7 @@ import {
 import { ScrollArea, ScrollBar } from "./ui/scroll-area"
 import { useQuery } from '@tanstack/react-query';
 import { RequestLoan } from "./LatestLoans"
-import { formatEther, parseEther } from "ethers"
+import { formatEther, parseEther ,parseUnits} from "ethers"
 import TransactionAddToken, {  usdc } from "./onchain/addTokens"
 
 async function fetchLoanRequests() {
@@ -185,7 +185,7 @@ export const columns: ColumnDef<RequestLoan>[] = [
           {/* <Button className="bg-blue-400"  onClick={() => handleAmountButtonClick(row.original)}>
             Lend
           </Button> */}
-          <TransactionAddToken buttonTitle="LEND" approeAmount={parseEther(formatEther(row.original.reg__borrowedAmount.toString()))} approveToken={usdc} functionName="lendLoan" args={[row.original.reg__loanId]} contractAddress={row.original.reg__borrower}/>
+          <TransactionAddToken buttonTitle="Liquidate" approeAmount={parseUnits(parseFloat(formatEther((row.original.reg__borrowedAmount).toString())).toFixed(4),6)} approveToken={usdc} functionName="liquidate" args={[row.original.reg__loanId]} contractAddress={row.original.reg__borrower}/>
         </div>
       );
     },
