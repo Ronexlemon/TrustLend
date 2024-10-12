@@ -37,12 +37,15 @@ struct Request{
 
     //mapping
     mapping(bytes32 => Loan)public  loans;
-    mapping (address token=> address priceFeed)public priceFeeds;
+    mapping (address token=>  address priceFeed)public priceFeeds;
+    mapping (address token = > uint256 decimals) public tokendecimal;
 
     // Helper function to convert wei to ether (for ERC20 tokens)
-    function weiToEther(uint256 amount) internal pure returns (uint256) {
-        return amount / 1e18; // Convert wei to ether (assuming ERC20 has 18 decimals)
+    function weiToEther(uint256 amount ,address token) internal pure returns (uint256) {
+        return amount / 10 ** tokendecimal[token]; // Convert wei to ether (assuming ERC20 has 18 decimals)
     }
+
+    
     
     
     function requestLoan(uint256 _collateralAmount,uint256 percentage,uint256 _duration,address collateral, address borrowed)external returns(bytes32){
@@ -100,9 +103,9 @@ struct Request{
     loan.duration.start = block.timestamp;
     loan.duration.end = block.timestamp + loan.duration.duration;
     loan.status.isLend = true;
-    uint256 borrowedAmountInEther = weiToEther(loan.amounts.borrowedAmount);
+    uint256 borrowedAmountInEther = weiToEther(loan.amounts.borrowedAmount,loan.amounts.borrowedToken);
 
-    borrowedAmountInEther <0?1:borrowedAmountInEther;
+    borrowedAmountInEther =borrowedAmountInEther <0?1:borrowedAmountInEther;
 
     // Transfer borrowed amount from lender to contract
     IERC20(loan.amounts.borrowedToken).transferFrom(msg.sender, address(this), borrowedAmountInEther);
@@ -130,14 +133,14 @@ struct Request{
         require(loan.duration.end < block.timestamp, "Still Active");
         require(loan.involvers.lender != address(0),"No Issuer");
 
-        uint256 borrowedAmountInEther = weiToEther(loan.amounts.borrowedAmount);
-        uint256 interest = weiToEther(loan.amounts.interest);
-        uint256 collateralAmountInEther = weiToEther(loan.amounts.collateralAmount);
+        uint256 borrowedAmountInEther = weiToEther(loan.amounts.borrowedAmount,loan.amounts.borrowedToken);
+        uint256 interest = weiToEther(loan.amounts.interest,loan.amounts.borrowedToken);
+        uint256 collateralAmountInEther = weiToEther(loan.amounts.collateralAmount,loan.amounts.collateralToken);
 
 
-    borrowedAmountInEther <0?1:borrowedAmountInEther;
-    interest <0?1:interest;
-    collateralAmountInEther< 0?1:collateralAmountInEther;
+    borrowedAmountInEther = borrowedAmountInEther <0?1:borrowedAmountInEther;
+    interest = interest <0?1:interest;
+     collateralAmountInEther =collateralAmountInEther< 0?1:collateralAmountInEther;
 
         //transfer the borrowed amout to the lender and claim collateral
         IERC20(loan.amounts.borrowedToken).transferFrom(msg.sender,address(this),(borrowedAmountInEther + interest));
@@ -145,7 +148,7 @@ struct Request{
         IERC20(loan.amounts.borrowedToken).transfer(loan.involvers.lender,((borrowedAmountInEther + interest)));
         //claim collateral e.g ETH ->
         //payable(msg.sender).transfer(loan.amounts.collateralAmount);
-        IERC20(loan.amounts.borrowedToken).transfer(msg.sender,collateralAmountInEther);
+        IERC20(loan.amounts.collateralToken).transfer(msg.sender,collateralAmountInEther);
 
 
         loan.status.isPaid = true;
@@ -163,8 +166,8 @@ struct Request{
 
         //return back the collateral
        //payable(loan.involvers.borrower).transfer(loan.amounts.collateralAmount);
-        uint256 collateralAmountInEther = weiToEther(loan.amounts.collateralAmount);
-        collateralAmountInEther < 0?1:collateralAmountInEther;
+        uint256 collateralAmountInEther = weiToEther(loan.amounts.collateralAmount,loan.amounts.collateralToken);
+         collateralAmountInEther =collateralAmountInEther < 0?1:collateralAmountInEther;
         IERC20(loan.amounts.collateralToken).transfer(msg.sender,collateralAmountInEther);
        
         loan.amounts.collateralAmount = 0 ;
@@ -177,14 +180,14 @@ struct Request{
         require(loan.status.isLend," !Lent out");
         require(!loan.status.isPaid," paid out ");
          require(loan.involvers.borrower == msg.sender,"Has Issuer");
-           uint256 borrowedAmountInEther = weiToEther(loan.amounts.borrowedAmount);
-        uint256 interest = weiToEther(loan.amounts.interest);
-        uint256 collateralAmountInEther = weiToEther(loan.amounts.collateralAmount);
+           uint256 borrowedAmountInEther = weiToEther(loan.amounts.borrowedAmount,loan.amounts.borrowedToken);
+        uint256 interest = weiToEther(loan.amounts.interest,loan.amounts.borrowedToken);
+        uint256 collateralAmountInEther = weiToEther(loan.amounts.collateralAmount,loan.amounts.collateralToken);
 
 
-    borrowedAmountInEther <0?1:borrowedAmountInEther;
-    interest <0?1:interest;
-    collateralAmountInEther< 0?1:collateralAmountInEther;
+    borrowedAmountInEther = borrowedAmountInEther <0?1:borrowedAmountInEther;
+   interest = interest <0?1:interest;
+     collateralAmountInEther =collateralAmountInEther< 0?1:collateralAmountInEther;
            IERC20(loan.amounts.borrowedToken).transferFrom(msg.sender,loan.involvers.lender,( borrowedAmountInEther + interest));
         //claim collateral e.g ETH ->
         //payable (loan.involvers.borrower).transfer(loan.amounts.collateralAmount);
@@ -197,9 +200,10 @@ struct Request{
 
     }
     //onlyOwner
-    function setPriceFeed(address token, address pricefeed)external {
+    function setPriceFeed(address token, address pricefeed,uint256 decimal)external {
         require ((token !=address(0) && pricefeed !=address(0)),"Invalid Address");
         priceFeeds[token] = pricefeed;
+        tokendecimal[token] = decimal;
     }
 
     function getUSDPrice(address _token)public view returns(int){
@@ -211,5 +215,8 @@ struct Request{
             /*uint80 answeredInRound*/
         ) = AggregatorV3Interface(_token).latestRoundData();
         return answer;
+    }
+    function getBlockTime()public view returns(uint256){
+        return block.timestamp;
     }
 }
