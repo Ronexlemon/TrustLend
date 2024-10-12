@@ -28,6 +28,7 @@ import { LoanClaim } from "@/pages/api/claims/claim";
 import { useAccount } from "wagmi";
 import { LoanRequest } from "@/pages/api/requestloans/userloans";
 import { parseUnits } from "ethers";
+import TransactionNoApprovalToken from "./onchain/noApprovaltx";
 
 
 
@@ -82,9 +83,10 @@ export function UserRequestLoans() {
               {/* <CardDescription>Duration: {loan.blockNumber} months</CardDescription> */}
               <CardDescription>Collateral: {formatEther(BigInt(loan.reg__collateralAmount))} LINK</CardDescription>
             </CardContent>
-            <CardFooter className="w-full h-1/3">
+            <CardFooter className="w-full h-1/3 flex">
               {/* <Button className="bg-blue-500 w-full">Lend</Button> */}
-              <TransactionAddToken  buttonTitle="REPAY" approeAmount={parseUnits(parseFloat(formatEther(BigInt(loan.reg__borrowedAmount))).toFixed(5),6)} approveToken={usdc} functionName="lendLoan" args={[loan.reg__loanId]} contractAddress={loan.reg__borrower}/>
+              <TransactionNoApprovalToken  buttonTitle="CLAIM"   functionName="claimCollateralBack" args={[loan.reg__loanId]} />
+              <TransactionAddToken  buttonTitle="REPAY" approeAmount={parseUnits(parseFloat(formatEther(BigInt(loan.reg__borrowedAmount))).toFixed(5),6)} approveToken={usdc} functionName="payLoan" args={[loan.reg__loanId]} contractAddress={loan.reg__borrower}/>
             </CardFooter>
           </Card>
         ))}

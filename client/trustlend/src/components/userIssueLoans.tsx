@@ -52,7 +52,7 @@ export function UserIssueLoans() {
     const {address} = useAccount()
 
     async function fetchRequestLoans() {
-        const response = await fetch('/api/claims/claim', {
+        const response = await fetch('/api/lend/lend', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -95,10 +95,11 @@ export function UserIssueLoans() {
               <CardDescription className="">Interest: {Number(formatEther(BigInt( loan._interest))).toFixed(5)} Usdc</CardDescription>
               {/* <CardDescription>Duration: {loan.blockNumber} months</CardDescription> */}
               <CardDescription>Collateral: {formatEther(BigInt(loan._collateralAmount))} LINK</CardDescription>
+              <CardDescription>Loan Borrower: {(loan._borrower).slice(0,5)} ...{(loan._borrower).slice(loan._borrower.length-5)} </CardDescription>
             </CardContent>
             <CardFooter className="w-full h-1/3">
               {/* <Button className="bg-blue-500 w-full">Lend</Button> */}
-              <TransactionNoApprovalToken  buttonTitle="CLAIM"   functionName="lendLoan" args={[loan._loanId]} />
+              {/* <TransactionNoApprovalToken  buttonTitle="ClAIM"   functionName="claimCollateralBack" args={[loan._loanId]} /> */}
             </CardFooter>
           </Card>
         ))}

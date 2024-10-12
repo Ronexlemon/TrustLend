@@ -14,6 +14,8 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import TransactionAddToken, { link, usdc } from "./onchain/addTokens"
+import { DatePicker } from "./Date"
+import { getSecondsDifference } from "@/utils/timeduration"
 
 import { parseEther } from "viem"
 
@@ -27,6 +29,7 @@ const LoanRequestDrawer = ({ open, setOpen }: DrawerProp) => {
   const [percentage, setPercentage] = React.useState("");
   const [collateralToken, setCollateralToken] = React.useState("LINK");
   const [borrowedToken, setBorrowedToken] = React.useState("USDC");
+  const [date,setDate] = React.useState<Date>(new Date())
 
   // const handleConfirm = () => {
   //   console.log("Collateral Amount:", collateralAmount);
@@ -82,6 +85,12 @@ const LoanRequestDrawer = ({ open, setOpen }: DrawerProp) => {
                   onChange={(e) => setPercentage((e.target.value))}
                 />
               </div>
+              <div>
+                <label htmlFor="percentage" className="block text-sm font-medium">
+                  Duration
+                </label>
+                <DatePicker setDatee={setDate}/>
+              </div>
 
               {/* Select for collateral token */}
               <div>
@@ -121,7 +130,7 @@ const LoanRequestDrawer = ({ open, setOpen }: DrawerProp) => {
               <Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
               {/* <Button onClick={handleConfirm}>Confirm</Button> */}
               {/* requestLoan(uint256 _collateralAmount,uint256 percentage,uint256 _duration,address collateral, address borrowed */}
-              <TransactionAddToken buttonTitle="Approve" args={[parseEther(collateralAmount),percentage,100,link,usdc]} functionName="requestLoan" approeAmount={parseEther(collateralAmount)} approveToken={link}/>
+              <TransactionAddToken buttonTitle="Approve" args={[parseEther(collateralAmount),percentage,getSecondsDifference(date),link,usdc]} functionName="requestLoan" approeAmount={parseEther(collateralAmount)} approveToken={link}/>
             </CardFooter>
           </Card>
           {/* End of Card */}

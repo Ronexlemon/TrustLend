@@ -19,8 +19,9 @@ const config = createConfig({
   chains: [base, baseSepolia],
   connectors: [
     coinbaseWallet({
-      appName: 'Create Wagmi',
+      appName: 'TrustLend',
       preference: 'smartWalletOnly',
+      
     }),
   ],
   storage: createStorage({

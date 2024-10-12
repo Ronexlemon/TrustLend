@@ -19,6 +19,8 @@ const linkusd = "0xb113F5A928BCfF189C998ab20d753a47F9dE5A61" as `0x${string}`;
  const usdcud = "0xd30e2101a97dcbAeBCBC04F14C3f624E67A35165" as `0x${string}`;
 export const link = "0xE4aB69C077896252FAFBD49EFD26B5D171A32410" as `0x${string}`;
 export const usdc = "0x036CbD53842c5426634e7929541eC2318f3dCF7e" as `0x${string}`;
+const linkDecimal = 18;
+const usdcDecimal = 6;
 
 export interface TransactProp {
   functionName: string;
@@ -58,7 +60,7 @@ export default function TransactionAddToken({functionName, args, buttonTitle ,ap
   //     address: TRUSTLENDCONTRACT as `0x${string}`,
   //     abi: trustAbi,
   //     functionName:"setPriceFeed",
-  //     args:[link,linkusd],
+  //     args:[usdc,usdcud,usdcDecimal],
   //   },
   // ];
 
@@ -82,10 +84,10 @@ export default function TransactionAddToken({functionName, args, buttonTitle ,ap
               chainId={84532}
               contracts={contractApprove}
               onStatus={handleOnStatus}
-              className="w-full"
+              
               
             >
-              <TransactionButton className="w-32 h-10 text-center" text={buttonTitle ?buttonTitle:"Approve"}/>
+              <TransactionButton  text={buttonTitle ?buttonTitle:"Approve"}/>
               <TransactionSponsor />
               <TransactionStatus>
                 <TransactionStatusLabel />
