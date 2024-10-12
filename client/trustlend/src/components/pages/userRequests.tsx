@@ -18,6 +18,7 @@ import LoanRequestDrawer from "../LoanRequestDollar";
 import { TRUSTLENDCONTRACT } from "@/contracts/contract";
 import { trustAbi } from "@/abi/TrustLend";
 import { UserRequestLoans } from "../userloanRequest";
+import { UserIssueLoans } from "../userIssueLoans";
 
 
  const contracts = [
@@ -61,7 +62,7 @@ const UserRequest = ()=>{
             <div className=" flex flex-col w-5/6 h-full p-4">
                 <div className="h-1/2">
                 <span className="text-2xl font-semibold">Good to see you, Make your decision count</span>
-                <UserRequestLoans/>
+                <UserIssueLoans/>
                 </div>
                
                 {/* <div className="h-1/4">

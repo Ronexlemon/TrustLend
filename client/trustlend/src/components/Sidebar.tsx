@@ -42,23 +42,23 @@ const SideBar = ({open,setOpen}:SideBarProp) => {
         >
           User Loans
         </button>
-        <Button
+        <button
           onClick={() => handleNavigation("/dashboard/market/loans/request")}
           className={`w-full text-left px-4 py-2 my-2 rounded-md bg-blue-200 tex-black hover:bg-blue-500  transition-colors duration-200 ${
             router.pathname === "/repay" ? "bg-blue-700" : ""
           }`}
         >
           User Requests
-        </Button>
+        </button>
 
-        <Button
+        <button
           onClick={() => handleNavigation("/dashboard/market/loans/request/liquidate")}
           className={`w-full text-left px-4 py-2 my-2 rounded-md bg-blue-200 hover:bg-blue-500  transition-colors duration-200 ${
             router.pathname === "/repay" ? "bg-blue-700" : ""
           }`}
         >
           Liquidate
-        </Button>
+        </button>
         <div  className="pt-10">
         <Button onClick={handleOpen} className="bg-blue-700">
           Loan Request

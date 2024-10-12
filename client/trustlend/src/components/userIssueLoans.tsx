@@ -23,6 +23,9 @@ import { LoanClaim } from "@/pages/api/claims/claim";
 //"blockTimestamp":"1728550090"
 //,"transactionHash":"0xf73870ac55f24585f1615b41bf9f1a62fc67af8a038351715f1d987433d50ca0"}]}
 import { useAccount } from "wagmi";
+import { parseUnits } from "ethers";
+import TransactionAddToken, { usdc } from "./onchain/addTokens";
+import TransactionNoApprovalToken from "./onchain/noApprovaltx";
 
 export interface RequestLoan{
   
@@ -94,7 +97,8 @@ export function UserIssueLoans() {
               <CardDescription>Collateral: {formatEther(BigInt(loan._collateralAmount))} LINK</CardDescription>
             </CardContent>
             <CardFooter className="w-full h-1/3">
-              <Button className="bg-blue-500 w-full">Lend</Button>
+              {/* <Button className="bg-blue-500 w-full">Lend</Button> */}
+              <TransactionNoApprovalToken  buttonTitle="CLAIM"   functionName="lendLoan" args={[loan._loanId]} />
             </CardFooter>
           </Card>
         ))}

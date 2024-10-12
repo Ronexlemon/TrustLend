@@ -7,6 +7,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useQuery } from '@tanstack/react-query';
 //import TransactionAddToken from "./onchain/addTokens";
 
+import TransactionAddToken, { usdc } from "./onchain/addTokens";
+import { RequestLoan } from "./LatestLoans";
+
 import { formatEther } from "viem";
 import { json } from "stream/consumers";
 import { LoanClaim } from "@/pages/api/claims/claim";
@@ -24,6 +27,7 @@ import { LoanClaim } from "@/pages/api/claims/claim";
 //,"transactionHash":"0xf73870ac55f24585f1615b41bf9f1a62fc67af8a038351715f1d987433d50ca0"}]}
 import { useAccount } from "wagmi";
 import { LoanRequest } from "@/pages/api/requestloans/userloans";
+import { parseUnits } from "ethers";
 
 
 
@@ -62,7 +66,7 @@ export function UserRequestLoans() {
   return (
     <ScrollArea className="w-full whitespace-nowrap rounded-md border">
       <div className="flex w-max space-x-4 p-4">
-        {data?.map((loan:LoanRequest) => (
+        {data?.map((loan:RequestLoan) => (
           <Card className="w-60 h-64 flex flex-col" key={loan.id}>
             <CardHeader className="flex justify-center items-center h-1/3">
               <Avatar>
@@ -79,7 +83,8 @@ export function UserRequestLoans() {
               <CardDescription>Collateral: {formatEther(BigInt(loan.reg__collateralAmount))} LINK</CardDescription>
             </CardContent>
             <CardFooter className="w-full h-1/3">
-              <Button className="bg-blue-500 w-full">Lend</Button>
+              {/* <Button className="bg-blue-500 w-full">Lend</Button> */}
+              <TransactionAddToken  buttonTitle="REPAY" approeAmount={parseUnits(parseFloat(formatEther(BigInt(loan.reg__borrowedAmount))).toFixed(5),6)} approveToken={usdc} functionName="lendLoan" args={[loan.reg__loanId]} contractAddress={loan.reg__borrower}/>
             </CardFooter>
           </Card>
         ))}

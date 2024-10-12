@@ -8,7 +8,7 @@ export type LoanRequest = {
   reg__borrower: string;
   reg__interest: string;
   reg__percentage: string;
-  reg__borrowedAmount: string;
+  reg__borrowedAmount: string | number | bigint;
   reg__collateralAmount: string;
   blockNumber: string;
 };

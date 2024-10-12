@@ -24,7 +24,7 @@ export interface TransactProp {
   functionName: string;
   args: string | number | `0x${string}` | bigint | (string | number | `0x${string}` | bigint)[];
   buttonTitle:string;
-  approeAmount:number | bigint |string;
+  approeAmount: number | bigint |string;
   approveToken :string | `0x${string}`;
   contractAddress?: string | `0x${string}`;
   
@@ -82,9 +82,10 @@ export default function TransactionAddToken({functionName, args, buttonTitle ,ap
               chainId={84532}
               contracts={contractApprove}
               onStatus={handleOnStatus}
+              className="w-full"
               
             >
-              <TransactionButton text={buttonTitle ?buttonTitle:"Approve"}/>
+              <TransactionButton className="w-32 h-10 text-center" text={buttonTitle ?buttonTitle:"Approve"}/>
               <TransactionSponsor />
               <TransactionStatus>
                 <TransactionStatusLabel />

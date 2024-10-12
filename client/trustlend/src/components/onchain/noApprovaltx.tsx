@@ -50,14 +50,8 @@ export default function TransactionNoApprovalToken({functionName, args, buttonTi
 
   return (
     <>
-      {/* Button to toggle Transaction component */}
-      <Button onClick={handleButtonClick} className="px-4 py-2 bg-blue-500 text-white rounded">
-        {showTransaction ? "Cancel" : buttonTitle}
-      </Button>
-
-      {/* Conditionally render the Transaction or Wallet based on state and address */}
-      {showTransaction && (
-        <>
+     
+     
           {address ? (
             <Transaction
               chainId={84532}
@@ -65,7 +59,7 @@ export default function TransactionNoApprovalToken({functionName, args, buttonTi
               onStatus={handleOnStatus}
               
             >
-              <TransactionButton text="Confrim"/>
+              <TransactionButton text={buttonTitle}/>
               <TransactionSponsor />
               <TransactionStatus>
                 <TransactionStatusLabel />
@@ -80,8 +74,7 @@ export default function TransactionNoApprovalToken({functionName, args, buttonTi
               </ConnectWallet>
             </Wallet>
           )}
-        </>
-      )}
+        
     </>
   );
 }
