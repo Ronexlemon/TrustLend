@@ -8,6 +8,8 @@ import { useQuery } from '@tanstack/react-query';
 //import TransactionAddToken from "./onchain/addTokens";
 
 import { formatEther } from "viem";
+import TransactionAddToken, { usdc } from "./onchain/addTokens";
+import { parseUnits } from "ethers";
 
 
 ///[{"id":"0xf73870ac55f24585f1615b41bf9f1a62fc67af8a038351715f1d987433d50ca064000000",
@@ -85,7 +87,8 @@ export function LatestLoans() {
               <CardDescription>Collateral: {formatEther(BigInt(loan.reg__collateralAmount))} LINK</CardDescription>
             </CardContent>
             <CardFooter className="w-full h-1/3">
-              <Button className="bg-blue-500 w-full">Lend</Button>
+              {/* <Button className="bg-blue-500 w-full">Lend</Button> */}
+              <TransactionAddToken buttonTitle="LEND" approeAmount={parseUnits(parseFloat(formatEther(BigInt(loan.reg__borrowedAmount))).toFixed(5),6)} approveToken={usdc} functionName="lendLoan" args={[loan.reg__loanId]} contractAddress={loan.reg__borrower}/>
             </CardFooter>
           </Card>
         ))}
